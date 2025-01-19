@@ -32,7 +32,15 @@ def get_db():
 
 
 # FastAPI app
-app = FastAPI()
+app = FastAPI(
+    title="Loopmeesters ben erbij API",
+    description="Backend voor simpele LouLou vervanger voor gebruik binnen loopmeesters om aan te geven wie naar een training komt",
+    version="0.1.0",
+    contact={
+        "name": "Guido Diepen"
+    }
+)
+
 
 # Middleware for CORS
 app.add_middleware(
@@ -46,6 +54,20 @@ app.add_middleware(
 
 @app.post("/polls/", response_model=ResultCreatePollSchema)
 def create_poll(poll: CreatePollSchema, db: Session = Depends(get_db)):
+    """Create a new ben-erbij
+
+    Each ben-erbij will have the following main items:
+
+    - Date
+    - Time
+    - Trainer
+    - Location
+    - Title
+    - is_training    (useful to have ben-erbij for non training moments)
+
+
+    After the call is successful, you will get a json object back where you can find the UUID of the newly created ben-erbij using the **result** key
+    """
     try:
         db_poll = Poll(date=poll.date, time=poll.time, is_training=poll.is_training, trainer=poll.trainer, location=poll.location, title=poll.title)
 
@@ -70,6 +92,8 @@ def create_poll(poll: CreatePollSchema, db: Session = Depends(get_db)):
 
 @app.get("/polls/", response_model=ResultListPolls)
 def list_polls(db: Session = Depends(get_db)):
+    """Retrieve a list of all the last 10 (currently hardcoded) ben-erbijs
+    """
 
     try:
 
@@ -89,6 +113,19 @@ def list_polls(db: Session = Depends(get_db)):
 
 @app.post("/vote/{poll_id}", response_model=ResultPollDetails)
 def cast_vote(poll_id: uuid.UUID, vote_details:CreateVoteSchema , db: Session = Depends(get_db)):
+    """Cast a vote for a specific ben-erbij
+
+    In the body of the post, you will have to provide:
+
+    - user_id: UUID for the current user (e.g. created once and stored in cookie for the website)
+    - user_name: text representation of the user name (e.g. Guido)
+    - poll_option_id: UUID of the poll option you want this user to vote for now
+    - cancel_vote: boolean indicating you want to cancel an existing vote.
+
+    If you try to cast the same vote twice, you will get a 409 error. If you try to cancel a non-existing vote, you will get a 404 error
+
+    After the vote is successful, you will get the complete details for the poll/ben-erbij you just voted for
+    """
     try:
 
         current_poll_details = get_all_details_for_poll(db,poll_id)
@@ -141,6 +178,8 @@ def cast_vote(poll_id: uuid.UUID, vote_details:CreateVoteSchema , db: Session = 
 
 @app.get("/polls/{poll_id}", response_model=ResultPollDetails)
 def get_poll_details(poll_id: uuid.UUID, db: Session = Depends(get_db)):
+    """Get the information for the specified ben-erbij indicated by its UUID
+    """
 
     try:
         details_for_poll = get_all_details_for_poll(db, poll_id)
@@ -158,6 +197,19 @@ def get_poll_details(poll_id: uuid.UUID, db: Session = Depends(get_db)):
 
 @app.post("/poll_option/", response_model=ResultPollDetails)
 def add_poll_option(new_option: CreatePollOptionSchema, db: Session = Depends(get_db)):
+    """Add a new poll option for a specific ben-erbij
+
+    the new_option must consist of the following two items:
+
+    - poll_id: the UUID of the ben-erbij you want to add this new option to
+    - description: The description of the new option you want to add
+
+
+    If you try to add the same option again, you will get a 409 error
+
+    After the call is successful, you will the full details of the ben-erbij you just added the option to
+
+    """
 
     try:
 
