@@ -9,6 +9,6 @@ COPY . /application
 RUN mkdir /application/sqlite_db/
 
 
-CMD [ "uvicorn",  "app:app" ]
+CMD [ "uvicorn",  "--host", "0.0.0.0" , "app:app" ]
 
 
