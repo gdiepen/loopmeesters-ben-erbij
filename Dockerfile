@@ -9,6 +9,6 @@ COPY . /application
 RUN mkdir /application/sqlite_db/
 
 
-RUN uvicorn app.py
+CMD [ "uvicorn",  "app:app" ]
 
 
