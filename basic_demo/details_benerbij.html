@@ -1,6 +1,50 @@
 <html>
 
   <script>
+
+    function logout(){
+        localStorage.clear()
+        location.reload()
+
+    }
+
+
+    function make_new_option(){
+
+      const params = new URL(window.location.href).searchParams;
+      const _id = params.get("id")
+
+
+      let url = "http://ben-erbij.guidodiepen.nl:9898/poll_option"
+      fetch(url, { 
+        method: 'POST' ,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+          { 
+            poll_id: _id,
+            description: document.getElementById("nieuwe-optie").value
+          }
+        )
+
+
+      })
+        .then(Result => Result.json())
+        .then(result => {
+
+
+          console.log(result)
+
+          location.reload()
+        })
+    }
+
+
+
+    }
+
     function uuidv4() {
       return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
         (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
@@ -170,8 +214,13 @@
 
   <ul id="options">
   </ul>
+
+  <input type="text" id="nieuwe-optie" size=50>
+  <button onclick="make_new_option()">Maak nieuwe optie</button>
   
 
+  <h1>Logout</h1>
+  <a href="#" onclick="logout()">Log out voor je huidige naam (debug functie voor guido :) )</a>
 
 
 </html>
