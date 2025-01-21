@@ -63,7 +63,7 @@
             cell3.innerHTML = ben_erbij.time
             cell4.innerHTML = ben_erbij.trainer
             cell5.innerHTML = ben_erbij.location
-            cell5.innerHTML = "<a href=\"details_benerbij.html?id="+ben_erbij.id+"\">" + ben_erbij.title + "</a>"
+            cell5.innerHTML = "<a href=\"/static/details_benerbij.html?id="+ben_erbij.id+"\">" + ben_erbij.title + "</a>"
 
 
             <!-- var _new_row = "<tr>" -->
@@ -102,7 +102,7 @@
   </script>
 
   <h1>Maak nieuwe ben-erbij</h1>
-  <a href="/create_benerbij.html">Maak nieuwe ben-erbij</a>
+  <a href="/static/create_benerbij.html">Maak nieuwe ben-erbij</a>
 
 
   <h1>Overzicht actieve ben-erbijs</h1>
@@ -117,13 +117,10 @@
     </thead>
 
     <tbody id="list-benerbij">
-    <tr>
-      <td>2025-01-01</td> <td>09:00</td> <td>Guido</td> <td>Koevlak</td> <td><a href="http://ben-erbij.guidodiepen.nl:9898/polls/6c4ebc83-2147-4ea5-bcef-9843755624d5">Trainen met Guido</a></td>
-
-    </tr>
 
     </tbody>
 
+  </table>
 
   <h1>Tekst voor whatsapp:</h1>
 
