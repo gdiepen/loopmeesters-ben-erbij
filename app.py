@@ -158,7 +158,7 @@ def cast_vote(poll_id: uuid.UUID, vote_details:CreateVoteSchema , db: Session = 
 
 
         if vote_details.cancel_vote:
-            db.query(Vote).filter(Vote.user_uuid == vote_details.user_id).filter(Vote.user_name == vote_details.user_name).filter(Vote.poll_id == poll_id).filter(Vote.poll_option_id == vote_details.pll_option_id).update({"is_cancelled": True})
+            db.query(Vote).filter(Vote.user_uuid == vote_details.user_id).filter(Vote.user_name == vote_details.user_name).filter(Vote.poll_id == poll_id).filter(Vote.poll_option_id == vote_details.poll_option_id).update({"is_cancelled": True})
             db.commit()
 
         else:
