@@ -1,4 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.staticfiles import StaticFiles
+from starlette.reponses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import relationship, Session, mapped_column
 from sqlalchemy.orm import sessionmaker
@@ -41,6 +43,11 @@ app = FastAPI(
     }
 )
 
+@app.get('/')
+def do_redirect():
+    return RedirectResponse(url="/list_benerbij.html")
+
+app.mount("/", StaticFiles(directory="basic_demo",html = True), name="static")
 
 # Middleware for CORS
 app.add_middleware(
