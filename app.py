@@ -43,11 +43,6 @@ app = FastAPI(
     }
 )
 
-@app.get('/')
-def do_redirect():
-    return RedirectResponse(url="/list_benerbij.html")
-
-app.mount("/", StaticFiles(directory="basic_demo",html = True), name="static")
 
 # Middleware for CORS
 app.add_middleware(
@@ -262,6 +257,11 @@ def add_poll_option(new_option: CreatePollOptionSchema, db: Session = Depends(ge
         return { "success": False, "error_message": e }
 
 
+@app.get('/')
+def do_redirect():
+    return RedirectResponse(url="/list_benerbij.html")
+
+app.mount("/", StaticFiles(directory="basic_demo",html = True), name="static")
     
 
 Base.metadata.create_all(bind=engine)
