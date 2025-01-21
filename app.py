@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.staticfiles import StaticFiles
-from starlette.reponses import RedirectResponse
+from fastapi.reponses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import relationship, Session, mapped_column
 from sqlalchemy.orm import sessionmaker
