@@ -68,6 +68,10 @@ def create_poll(poll: CreatePollSchema, db: Session = Depends(get_db)):
 
     After the call is successful, you will get a json object back where you can find the UUID of the newly created ben-erbij using the **result** key
     """
+    for poll_option in poll.options:
+        if poll_option == "":
+            raise HTTPException(status_code=422, detail=f"Optie mag niet leeg zijn!")
+
     try:
         db_poll = Poll(date=poll.date, time=poll.time, is_training=poll.is_training, trainer=poll.trainer, location=poll.location, title=poll.title)
 
@@ -216,6 +220,10 @@ def add_poll_option(new_option: CreatePollOptionSchema, db: Session = Depends(ge
         details_for_poll = get_all_details_for_poll(db, new_option.poll_id)
     except UnknownPoll:
         raise HTTPException(status_code=404, detail=f"Kan de gevraagde poll niet vinden")
+
+    # Check if we are not having empty descriptin
+    if new_option.description == "":
+        raise HTTPException(status_code=422, detail=f"Optie mag niet leeg zijn!")
 
     # Check if there exists a option with the same description
     option_exists = len( [x for x in details_for_poll.votes if x.description == new_option.description]) 
