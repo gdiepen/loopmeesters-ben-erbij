@@ -1,0 +1,177 @@
+<html>
+
+  <script>
+    function uuidv4() {
+      return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+        (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+      );
+    }
+
+
+
+
+    function do_vote(vote_option, cancel_vote){
+
+      const params = new URL(window.location.href).searchParams;
+
+      const _id = params.get("id")
+
+
+      let user_id = localStorage.getItem("user_id")
+      let user_name = localStorage.getItem("name")
+
+
+      let url = "http://ben-erbij.guidodiepen.nl:9898/vote/" + _id
+      fetch(url, { 
+        method: 'POST' ,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+          { 
+            user_id: user_id,
+            user_name: user_name,
+            poll_option_id: vote_option,
+            cancel_vote: cancel_vote 
+          }
+        )
+
+
+      })
+        .then(Result => Result.json())
+        .then(result => {
+
+
+          console.log(result)
+
+          location.reload()
+        })
+    }
+    window.onload = function() {
+
+
+      if (localStorage.getItem("name") === null){
+
+          var name = null
+
+        while (name === null){
+          name = prompt("Geef je naam", "") ; 
+        }
+
+        localStorage.setItem( "name", name );
+        localStorage.setItem( "user_id", uuidv4() );
+
+
+
+
+      }
+
+
+      let user_name = localStorage.getItem("name")
+      let user_id = localStorage.getItem("user_id")
+
+
+      const params = new URL(window.location.href).searchParams;
+
+      const _id = params.get("id")
+      // Url for the request 
+      let url = 'http://ben-erbij.guidodiepen.nl:9898/polls/' + _id ;
+
+      // Making our request 
+      fetch(url, { method: 'GET' })
+        .then(Result => Result.json())
+        .then(result => {
+          console.log(result)
+
+          document.getElementById("benerbij-beschrijving").innerHTML = result.result.title
+          document.getElementById("benerbij-datum").innerHTML = result.result.date
+          document.getElementById("benerbij-tijd").innerHTML = result.result.time
+          document.getElementById("benerbij-trainer").innerHTML = result.result.trainer
+          document.getElementById("benerbij-lokatie").innerHTML = result.result.location
+
+
+
+          result.result.votes.forEach( (option) => {
+            var li = document.createElement("li")
+
+
+            __link = document.createElement("a")
+
+
+            // Check if this user voted already for this one
+
+
+            let foo = option.users.filter( (x) => {
+              return (x.id === user_id) && (x.name === user_name)
+            })
+
+            var cancel_vote = "false"
+
+            if (foo.length > 0){
+              cancel_vote = "true"
+
+            }
+
+
+            __link.setAttribute("href", "#")
+            __link.setAttribute("onclick", "do_vote(\""+option.poll_option_id+"\", "+cancel_vote+")")
+            __link.appendChild(document.createTextNode(option.description))
+
+            //li.appendChild( "<a href=\"#\" onclick=\"\">" + option.description + "</a>")
+            li.appendChild(__link)
+
+            var ul = document.createElement("ul")
+
+            option.users.forEach( _user => {
+              let _li_user = document.createElement("li")
+              _li_user.appendChild(document.createTextNode(_user.name))
+
+              ul.appendChild(_li_user)
+            })
+
+
+
+            li.appendChild(ul)
+
+
+
+            //li.appendChild(document.createTextNode(option.description))
+            //li.appendChild
+
+
+            document.getElementById("options").appendChild(li)
+
+
+
+
+
+
+          })
+
+
+        })
+        .catch(errorMsg => { console.log(errorMsg); }); 
+
+    }
+  </script>
+
+
+
+
+  <p>Beschrijving: <span id="benerbij-beschrijving"/></p>
+  <p>Datum: <span id="benerbij-datum"/></p>
+  <p>Tijd: <span id="benerbij-tijd"/></p>
+  <p>Trainer: <span id="benerbij-trainer"/></p>
+  <p>Lokatie: <span id="benerbij-lokatie"/></p>
+
+  <br><br>
+  <h2>Opties:</h2>
+
+  <ul id="options">
+  </ul>
+  
+
+
+
+</html>

@@ -1,0 +1,111 @@
+<html>
+
+  <script>
+
+
+    function create_ben_er_bij(){
+
+
+      let sel_trainer = document.getElementById("benerbij-trainer")
+      let trainer = sel_trainer.options[sel_trainer.selectedIndex].text
+
+      let sel_lokatie = document.getElementById("benerbij-lokatie")
+      let lokatie = sel_lokatie.options[sel_lokatie.selectedIndex].text
+
+
+        let body =  JSON.stringify(
+          { 
+            title: document.getElementById("benerbij-beschrijving").value,
+            time: document.getElementById("benerbij-tijd").value,
+            date: document.getElementById("benerbij-datum").value,
+            trainer: trainer,
+            lokatie: lokatie,
+            is_training: document.getElementById("benerbij-is-training").value === "on",
+            options: [ "Ben erbij!" ]
+          }
+        )
+
+        console.log(body)
+
+
+
+      let url = "http://ben-erbij.guidodiepen.nl:9898/polls"
+      fetch(url, { 
+        method: 'POST' ,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+          { 
+            title: document.getElementById("benerbij-beschrijving").value,
+            time: document.getElementById("benerbij-tijd").value,
+            date: document.getElementById("benerbij-datum").value,
+            trainer: trainer,
+            location: lokatie,
+            is_training: document.getElementById("benerbij-is-training").value === "on",
+            options: [ "Ben erbij!" ]
+          }
+        )
+
+
+      })
+        .then(Result => Result.json())
+        .then(result => {
+
+
+          location.replace("/list_benerbij.html")
+
+        })
+    }
+    window.onload = function() {
+
+    }
+  </script>
+
+  <h1>Terug naar overzicht</h1>
+  <a href="/list_benerbij.html">Overzicht</a>
+
+
+
+  <h1>Maak nieuw ben erbij</h1>
+
+
+
+
+  <p>Beschrijving: <input type="text" size="50" id="benerbij-beschrijving"/>
+  <p>Datum: <input type="text" size="30" id="benerbij-datum"/>
+  <p>Tijd: <select id="benerbij-tijd"/><option value="09:00">09:00</option><option value="19:30">19:30</option><option value="20:00">20:00</option><option value="Anders...">Anders...</option></select>
+  <p>Trainer: <select id="benerbij-trainer"/><option value="Karel">Karel</option><option value="Barn">Barn</option>
+    <option value="Jeroen TW">Jeroen TW</option>
+    <option value="Rob">Rob</option>
+    <option value="Dick">Dick</option>
+    <option value="Jeroen en Rob">Jeroen en Rob</option>
+    <option value="Guido">Guido</option>
+    <option value="Anders...">Anders...</option></select>
+
+
+  <p>Lokatie: <select id="benerbij-lokatie"/>
+    <option value="Koevlak">Koevlak</option>
+    <option value="Gemeentehuis Bloemendaal (parkeerplaats Rechts)">Gemeentehuis Bloemendaal (parkeerplaats Rechts)</option>
+    <option value="Gemeentehuis Bloemendaal (parkeerplaats Links)">Gemeentehuis Bloemendaal (parkeerplaats Links)</option>
+    <option value="Kennemer sporthal">Kennemer sporthal</option>
+    <option value="Tettenrode">Tettenrode</option>
+    <option value="Anders...">Anders...</option></select>
+
+
+  <p>Is training: <input type="checkbox" id="benerbij-is-training" checked/>
+
+
+  <br><br>
+  <h2>Mogelijke antwoorden::</h2>
+
+  <ul id="options">
+    <li>Ben er bij!</li>
+  </ul>
+  
+  <br><br>
+  <button onclick="create_ben_er_bij()">Maak Ben Erbij!</button>
+
+
+</html>
