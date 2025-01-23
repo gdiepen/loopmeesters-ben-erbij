@@ -1,0 +1,30 @@
+version: "3.3"
+
+services:
+  benerbij:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "benerbij"
+    container_name: "loopmeestersbenerbij"
+    volumes:
+      - "./sqlite_db:/application/sqlite_db"
+
+
+    networks:
+      - traefik_service
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.benerbij.rule=Host(`ben-erbij.guidodiepen.nl`)"
+      - "traefik.http.routers.benerbij.entrypoints=websecure"
+      - "traefik.http.routers.benerbij.tls=true"
+      - "traefik.http.routers.benerbij.tls.certresolver=myresolver"
+      - "traefik.http.services.benerbij.loadbalancer.server.port=8000"
+      - "traefik.docker.network=traefik_service"
+
+
+
+networks:
+  traefik_service:
+    external: true

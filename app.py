@@ -54,7 +54,7 @@ app.add_middleware(
 )
 
 
-@app.post("/polls/", response_model=ResultCreatePollSchema)
+@app.post("/api/polls/", response_model=ResultCreatePollSchema)
 def create_poll(poll: CreatePollSchema, db: Session = Depends(get_db)):
     """Create a new ben-erbij
 
@@ -96,7 +96,7 @@ def create_poll(poll: CreatePollSchema, db: Session = Depends(get_db)):
         return { "success": False, "error_message": e }
 
 
-@app.get("/polls/", response_model=ResultListPolls)
+@app.get("/api/polls/", response_model=ResultListPolls)
 def list_polls(db: Session = Depends(get_db)):
     """Retrieve a list of all the last 10 (currently hardcoded) ben-erbijs
     """
@@ -117,7 +117,7 @@ def list_polls(db: Session = Depends(get_db)):
 
 
 
-@app.post("/vote/{poll_id}", response_model=ResultPollDetails)
+@app.post("/api/vote/{poll_id}", response_model=ResultPollDetails)
 def cast_vote(poll_id: uuid.UUID, vote_details:CreateVoteSchema , db: Session = Depends(get_db)):
     """Cast a vote for a specific ben-erbij
 
@@ -182,7 +182,7 @@ def cast_vote(poll_id: uuid.UUID, vote_details:CreateVoteSchema , db: Session = 
 
 
 
-@app.get("/polls/{poll_id}", response_model=ResultPollDetails)
+@app.get("/api/polls/{poll_id}", response_model=ResultPollDetails)
 def get_poll_details(poll_id: uuid.UUID, db: Session = Depends(get_db)):
     """Get the information for the specified ben-erbij indicated by its UUID
     """
@@ -201,7 +201,7 @@ def get_poll_details(poll_id: uuid.UUID, db: Session = Depends(get_db)):
 
 
 
-@app.post("/poll_option/", response_model=ResultPollDetails)
+@app.post("/api/poll_option/", response_model=ResultPollDetails)
 def add_poll_option(new_option: CreatePollOptionSchema, db: Session = Depends(get_db)):
     """Add a new poll option for a specific ben-erbij
 
@@ -259,9 +259,9 @@ def add_poll_option(new_option: CreatePollOptionSchema, db: Session = Depends(ge
 
 @app.get('/')
 def do_redirect():
-    return RedirectResponse(url="/static/list_benerbij.html")
+    return RedirectResponse(url="/list_benerbij.html")
 
-app.mount("/static", StaticFiles(directory="basic_demo",html = True), name="static")
+app.mount("/", StaticFiles(directory="basic_demo",html = True), name="static")
     
 
 Base.metadata.create_all(bind=engine)

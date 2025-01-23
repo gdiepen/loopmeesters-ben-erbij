@@ -29,7 +29,7 @@
 
 
 
-      let url = "http://ben-erbij.guidodiepen.nl:9898/polls"
+      let url = "/api/polls"
       fetch(url, { 
         method: 'POST' ,
         headers: {
@@ -54,7 +54,7 @@
         .then(result => {
 
 
-          location.replace("/static/list_benerbij.html")
+          location.replace("/list_benerbij.html")
 
         })
     }
@@ -64,7 +64,7 @@
   </script>
 
   <h1>Terug naar overzicht</h1>
-  <a href="/static/list_benerbij.html">Overzicht</a>
+  <a href="/list_benerbij.html">Overzicht</a>
 
 
 
