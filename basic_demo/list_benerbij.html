@@ -4,7 +4,7 @@
 
     function create_text_for_whatsapp(_id){
 
-      let url = '/api/polls';
+      let url = '/api/polls/';
 
       // Making our request 
       fetch(url, { method: 'GET' })
@@ -31,7 +31,7 @@
     window.onload = function() {
 
       // Url for the request 
-      let url = '/api/polls';
+      let url = '/api/polls/';
 
       // Making our request 
       fetch(url, { method: 'GET' })
