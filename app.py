@@ -259,9 +259,9 @@ def add_poll_option(new_option: CreatePollOptionSchema, db: Session = Depends(ge
 
 @app.get('/')
 def do_redirect():
-    return RedirectResponse(url="/list_benerbij.html")
+    return RedirectResponse(url="/static/list_benerbij.html")
 
-app.mount("/", StaticFiles(directory="basic_demo",html = True), name="static")
+app.mount("/static", StaticFiles(directory="basic_demo",html = True), name="static")
     
 
 Base.metadata.create_all(bind=engine)
