@@ -1,4 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator
+import re
+from typic_extensions import Self
 import uuid
 import datetime
 
@@ -6,6 +8,12 @@ import datetime
 class VoteUserSchema(BaseModel):
     id: uuid.UUID
     name: str
+
+    @model_validator(mode="after")
+    def validate_input(self) -> Self:
+        if not self.name:
+            raise ValueError("Naam mag niet leeg zijn")
+        return self
 
 
 class PollOptionSchema(BaseModel):
@@ -42,6 +50,41 @@ class CreatePollSchema(BaseModel):
     options: list[str]
 
 
+    @model_validator(mode='after')
+    def validate_input(self) -> Self:
+        if not self.title:
+            raise ValueError("Titel/Beschrijving mag niet leeg zijn")
+
+
+        if self.is_training:
+            if not self.time:
+                raise ValueError("Tijd mag niet leeg zijn voor een training")
+
+            if not self.time:
+                raise ValueError("Tijd mag niet leeg zijn voor een training")
+
+            if not re.match(r"\d\d:\d\d", self.time):
+                raise ValueError("Tijd moet in HH:MM notatie zijn")
+
+            _hours, _minutes = map(int, self.time.split(":"))
+            if _hours >= 24:
+                raise ValueError("Uren van de tijd kan niet >= 24 zijn")
+            if _minutes >= 60:
+                raise ValueError("Minuten van de tijd kan niet >= 60 zijn")
+
+            if not self.trainer:
+                raise ValueError("Trainer mag niet leeg zijn voor een trainings event")
+
+            if not self.location:
+                raise ValueError("Lokatie mag niet leeg zijn voor een trainings event")
+
+        if len([x for x in self.options if len(x) == 0]) >= 1:
+            raise ValueError("Een optie mag niet leeg zijn")
+
+        return self
+
+
+
 class CreateVoteSchema(BaseModel):
 
     user_id: uuid.UUID
@@ -50,9 +93,23 @@ class CreateVoteSchema(BaseModel):
     poll_option_id: uuid.UUID
     cancel_vote: bool = False
 
+    @model_validator(mode="after")
+    def validate_input(self) -> Self:
+        if not self.username:
+            raise ValueError("Naam mag niet leeg zijn")
+        return self
+
+    
+
 class CreatePollOptionSchema(BaseModel):
     poll_id: uuid.UUID
     description: str
+
+    @model_validator(mode="after")
+    def validate_input(self) -> Self:
+        if not self.description:
+            raise ValueError("Een ben-erbij optie mag niet leeg zijn")
+        return self
 
 class ResultCreatePollOptionSchema(BaseModel):
     success: bool
