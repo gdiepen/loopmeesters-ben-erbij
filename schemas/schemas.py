@@ -1,6 +1,6 @@
 from pydantic import BaseModel, model_validator
 import re
-from typic_extensions import Self
+from typing_extensions import Self
 import uuid
 import datetime
 
