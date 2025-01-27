@@ -17,7 +17,7 @@ services:
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.benerbijbackend.rule=Host(`ben-erbij.guidodiepen.nl`) && ( PathPrefix(`/api`) || PathPrefix(`/static`) )"
+      - "traefik.http.routers.benerbijbackend.rule=Host(`ben-erbij.guidodiepen.nl`) && ( PathPrefix(`/api`) || PathPrefix(`/static`) || PathPrefix(`/docs`) || PathPrefix(`/openapi.json`))"
       - "traefik.http.routers.benerbijbackend.entrypoints=websecure"
       - "traefik.http.routers.benerbijbackend.tls=true"
       - "traefik.http.routers.benerbijbackend.tls.certresolver=myresolver"
@@ -44,6 +44,8 @@ services:
       - "traefik.http.routers.benerbijfrontend.tls.certresolver=myresolver"
       - "traefik.http.services.benerbijfrontend.loadbalancer.server.port=3000"
       - "traefik.docker.network=traefik_service"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+
 
 
 
