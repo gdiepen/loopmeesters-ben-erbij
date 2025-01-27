@@ -40,7 +40,7 @@ def get_db():
 app = FastAPI(
     title="Loopmeesters ben erbij API",
     description="Backend voor simpele LouLou vervanger voor gebruik binnen loopmeesters om aan te geven wie naar een training komt",
-    version="0.1.0",
+    version="0.1.1",
     contact={
         "name": "Guido Diepen"
     }
