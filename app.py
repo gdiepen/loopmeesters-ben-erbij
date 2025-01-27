@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 import uuid
 import time
-
+import logging
 
 from util import get_all_details_for_poll, UnknownPoll
 
@@ -15,6 +15,9 @@ from util import get_all_details_for_poll, UnknownPoll
 from db.db_schema import Poll, PollOption, Vote, Base
 
 from schemas.schemas import CreatePollSchema, CreateVoteSchema, CreatePollOptionSchema, ResultCreatePollSchema, PollBaseSchema, ResultListPolls, ResultPollDetailsResults, ResultPollDetails, ResultPollOption
+
+logger = logging.getLogger(__name__)
+
 
 # Database setup
 DATABASE_URL = "sqlite:///./sqlite_db/test.db"  # Replace with your database URL
@@ -52,6 +55,41 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/api/trainers", response_model=list[str])
+def get_trainers():
+    """Get a list of all trainers
+    """
+    result = []
+
+    try:
+        with open("./data_api_endpoints/trainers.txt") as f:
+            result = [x.strip() for x in f.read().strip().split("\n")]
+
+    except Exception as e:
+        logger.error("ERROR during reading of trainers file")
+        logger.exception(e)
+
+    return result
+
+
+@app.get("/api/locations", response_model=list[str])
+def get_trainers():
+    """Get a list of all locations
+    """
+    result = []
+
+    try:
+        with open("./data_api_endpoints/locations.txt") as f:
+            result = [x.strip() for x in f.read().strip().split("\n")]
+
+    except Exception as e:
+        logger.error("ERROR during reading of locations file")
+        logger.exception(e)
+
+    return result
+
 
 
 @app.post("/api/polls/", response_model=ResultCreatePollSchema)
