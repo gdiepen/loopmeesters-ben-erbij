@@ -95,7 +95,7 @@ class CreateVoteSchema(BaseModel):
 
     @model_validator(mode="after")
     def validate_input(self) -> Self:
-        if not self.username:
+        if not self.user_name:
             raise ValueError("Naam mag niet leeg zijn")
         return self
 
