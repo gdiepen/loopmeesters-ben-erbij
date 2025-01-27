@@ -17,11 +17,32 @@ services:
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.benerbij.rule=Host(`ben-erbij.guidodiepen.nl`)"
-      - "traefik.http.routers.benerbij.entrypoints=websecure"
-      - "traefik.http.routers.benerbij.tls=true"
-      - "traefik.http.routers.benerbij.tls.certresolver=myresolver"
-      - "traefik.http.services.benerbij.loadbalancer.server.port=8000"
+      - "traefik.http.routers.benerbijbackend.rule=Host(`ben-erbij.guidodiepen.nl`) && ( PathPrefix(`/api`) || PathPrefix(`/static`) )"
+      - "traefik.http.routers.benerbijbackend.entrypoints=websecure"
+      - "traefik.http.routers.benerbijbackend.tls=true"
+      - "traefik.http.routers.benerbijbackend.tls.certresolver=myresolver"
+      - "traefik.http.services.benerbijbackend.loadbalancer.server.port=8000"
+      - "traefik.docker.network=traefik_service"
+
+
+  benerbij-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: "benerbij-frontend"
+    container_name: "loopmeestersbenerbij-frontend"
+
+
+    networks:
+      - traefik_service
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.benerbijfrontend.rule=Host(`ben-erbij.guidodiepen.nl`)"
+      - "traefik.http.routers.benerbijfrontend.entrypoints=websecure"
+      - "traefik.http.routers.benerbijfrontend.tls=true"
+      - "traefik.http.routers.benerbijfrontend.tls.certresolver=myresolver"
+      - "traefik.http.services.benerbijfrontend.loadbalancer.server.port=3000"
       - "traefik.docker.network=traefik_service"
 
 
