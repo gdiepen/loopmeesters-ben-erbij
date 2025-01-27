@@ -23,6 +23,7 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY ./loopmeesters ./
+COPY ./guido_updated_next.config.ts ./next.config.ts
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
