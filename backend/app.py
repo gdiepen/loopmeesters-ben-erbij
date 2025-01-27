@@ -176,6 +176,7 @@ def cast_vote(poll_id: uuid.UUID, vote_details:CreateVoteSchema , db: Session = 
     except UnknownPoll:
         raise HTTPException(status_code=404, detail=f"Kan de gevraagde poll niet vinden")
     except Exception as e:
+        logger.exception(e)
         return { "success": False, "error_message": e }
        
     # Check if the user already exists for this answer
@@ -219,6 +220,7 @@ def cast_vote(poll_id: uuid.UUID, vote_details:CreateVoteSchema , db: Session = 
 
 
     except Exception as e:
+        logger.exception(e)
         return { "success": False, "error_message": e }
 
 
@@ -237,6 +239,7 @@ def get_poll_details(poll_id: uuid.UUID, db: Session = Depends(get_db)):
     except UnknownPoll:
         raise HTTPException(status_code=404, detail=f"Kan de gevraagde poll niet vinden")
     except Exception as e:
+        logger.exception(e)
         return { "success": False, "error_message": str(e)}
     
 
@@ -295,6 +298,7 @@ def add_poll_option(new_option: CreatePollOptionSchema, db: Session = Depends(ge
         return { "success": True, "result": foo }
 
     except Exception as e:
+        logger.exception(e)
         return { "success": False, "error_message": e }
 
 
