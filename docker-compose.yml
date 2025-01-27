@@ -9,6 +9,7 @@ services:
     container_name: "loopmeestersbenerbij"
     volumes:
       - "./sqlite_db:/application/sqlite_db"
+      - "./data_api_endpoints:/application/data_api_endpoints"
 
 
     networks:
