@@ -192,7 +192,10 @@ def cast_vote(poll_id: uuid.UUID, vote_details:CreateVoteSchema , db: Session = 
         if not vote_details.cancel_vote and user_voted_this_before:
             raise HTTPException(status_code=409, detail=f"Gebruiker kan niet nogmaals deze optie selecteren")
 
-        
+       
+    # Check if the option actually exists
+    if vote_details.poll_option_id not in [x.poll_option_id for x in current_poll_details.votes]:
+        raise HTTPException(status_code=404, detail=f"Kan het gevraagde antwoord niet vinden")
 
     try:
 
