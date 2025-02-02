@@ -66,15 +66,24 @@ services:
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.benerbijfrontend.rule=Host(`ben-erbij.guidodiepen.nl`)"
-      - "traefik.http.routers.benerbijfrontend.entrypoints=websecure"
-      - "traefik.http.routers.benerbijfrontend.tls=true"
-      - "traefik.http.routers.benerbijfrontend.tls.certresolver=myresolver"
       - "traefik.http.services.benerbijfrontend.loadbalancer.server.port=3000"
       - "traefik.docker.network=traefik_service"
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
 
 
+      - "traefik.http.routers.benerbijfrontend-admin.rule=Host(`ben-erbij.guidodiepen.nl`) && (Path(`/`) || PathPrefix(`/create-poll`))"
+      - "traefik.http.routers.benerbijfrontend-admin.entrypoints=websecure"
+      - "traefik.http.routers.benerbijfrontend-admin.tls=true"
+      - "traefik.http.routers.benerbijfrontend-admin.tls.certresolver=myresolver"
+      - "traefik.http.routers.benerbijfrontend-admin.service=benerbij-frontend"
+      - "traefik.http.routers.benerbijfrontend-admin.middlewares=myauth2"
+      - "traefik.http.middlewares.myauth2.basicauth.users=${HTTP_PASSWD}"
+
+      - "traefik.http.routers.benerbijfrontend.rule=Host(`ben-erbij.guidodiepen.nl`)"
+      - "traefik.http.routers.benerbijfrontend.entrypoints=websecure"
+      - "traefik.http.routers.benerbijfrontend.tls=true"
+      - "traefik.http.routers.benerbijfrontend.tls.certresolver=myresolver"
+      - "traefik.http.routers.benerbijfrontend.service=benerbij-frontend"
 
 
 networks:
