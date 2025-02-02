@@ -17,12 +17,36 @@ services:
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.benerbijbackend.rule=Host(`ben-erbij.guidodiepen.nl`) && ( PathPrefix(`/api`) || PathPrefix(`/static`) || PathPrefix(`/docs`) || PathPrefix(`/openapi.json`))"
+      - "traefik.docker.network=traefik_service"
+
+
+      - "traefik.http.services.benerbij-backend.loadbalancer.server.port=8000"
+
+      - "traefik.http.routers.benerbijbackend-admin.rule=Host(`ben-erbij.guidodiepen.nl`) && (Path(`/api/polls`) || Path(`/api/polls/`))"
+      - "traefik.http.routers.benerbijbackend-admin.entrypoints=websecure"
+      - "traefik.http.routers.benerbijbackend-admin.middlewares=myauth1"
+      - "traefik.http.routers.benerbijbackend-admin.tls=true"
+      - "traefik.http.routers.benerbijbackend-admin.tls.certresolver=myresolver"
+      - "traefik.http.routers.benerbijbackend-admin.service=benerbij-backend"
+      - "traefik.http.middlewares.myauth1.basicauth.users=${HTTP_PASSWD}"
+
+
+      - "traefik.http.routers.benerbijbackend.rule=Host(`test-auth-ben-erbij.guidodiepen.nl`) && ( PathPrefix(`/api`) || PathPrefix(`/static`) || PathPrefix(`/docs`) || PathPrefix(`/openapi.json`)) && !(Path(`/api/polls`) || Path(`/api/polls/`))"
       - "traefik.http.routers.benerbijbackend.entrypoints=websecure"
       - "traefik.http.routers.benerbijbackend.tls=true"
       - "traefik.http.routers.benerbijbackend.tls.certresolver=myresolver"
-      - "traefik.http.services.benerbijbackend.loadbalancer.server.port=8000"
-      - "traefik.docker.network=traefik_service"
+      - "traefik.http.routers.benerbijbackend.service=benerbij-backend"
+
+
+
+
+
+
+
+
+
+
+
 
 
   benerbij-frontend:
