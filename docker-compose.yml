@@ -56,6 +56,10 @@ services:
     image: "benerbij-frontend"
     container_name: "loopmeestersbenerbij-frontend"
 
+    environment:
+      API_USER: "${API_USER}"
+      API_PASSWD: "${API_PASSWD}"
+
 
     networks:
       - traefik_service
