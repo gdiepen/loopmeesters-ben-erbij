@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 # Database setup
-DATABASE_URL = "sqlite:///./sqlite_db/test.db"  # Replace with your database URL
+DATABASE_URL = "sqlite:///./sqlite_db/benerbij.db"  # Replace with your database URL
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
