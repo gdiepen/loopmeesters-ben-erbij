@@ -31,7 +31,7 @@ services:
       - "traefik.http.middlewares.myauth1.basicauth.users=${HTTP_PASSWD}"
 
 
-      - "traefik.http.routers.benerbijbackend.rule=Host(`test-auth-ben-erbij.guidodiepen.nl`) && ( PathPrefix(`/api`) || PathPrefix(`/static`) || PathPrefix(`/docs`) || PathPrefix(`/openapi.json`)) && !(Path(`/api/polls`) || Path(`/api/polls/`))"
+      - "traefik.http.routers.benerbijbackend.rule=Host(`ben-erbij.guidodiepen.nl`) && ( PathPrefix(`/api`) || PathPrefix(`/static`) || PathPrefix(`/docs`) || PathPrefix(`/openapi.json`)) && !(Path(`/api/polls`) || Path(`/api/polls/`))"
       - "traefik.http.routers.benerbijbackend.entrypoints=websecure"
       - "traefik.http.routers.benerbijbackend.tls=true"
       - "traefik.http.routers.benerbijbackend.tls.certresolver=myresolver"
