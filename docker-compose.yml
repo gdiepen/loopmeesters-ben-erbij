@@ -66,7 +66,7 @@ services:
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.benerbijfrontend.loadbalancer.server.port=3000"
+      - "traefik.http.services.benerbij-frontend.loadbalancer.server.port=3000"
       - "traefik.docker.network=traefik_service"
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
 
