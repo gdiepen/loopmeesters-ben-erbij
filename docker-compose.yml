@@ -53,6 +53,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        BEN_ERBIJ_BASE_URL: "${BEN_ERBIJ_BASE_URL}"
     image: "benerbij-frontend"
     container_name: "loopmeestersbenerbij-frontend"
 
