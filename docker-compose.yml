@@ -5,8 +5,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: "benerbij-backend"
-    container_name: "loopmeestersbenerbij-backend"
     volumes:
       - "./sqlite_db:/application/sqlite_db"
       - "./data_api_endpoints:/application/data_api_endpoints"
@@ -53,10 +51,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      args:
-        BEN_ERBIJ_BASE_URL: "${BEN_ERBIJ_BASE_URL}"
-    image: "benerbij-frontend"
-    container_name: "loopmeestersbenerbij-frontend"
 
     environment:
       API_USER: "${API_USER}"
