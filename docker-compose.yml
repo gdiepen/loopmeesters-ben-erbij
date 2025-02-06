@@ -20,7 +20,7 @@ services:
 
       - "traefik.http.services.benerbij-backend.loadbalancer.server.port=8000"
 
-      - "traefik.http.routers.benerbijbackend-admin.rule=Host(`ben-erbij.guidodiepen.nl`) && (Path(`/api/polls`) || Path(`/api/polls/`))"
+      - "traefik.http.routers.benerbijbackend-admin.rule=Host(`${TRAEFIK_DOMAIN}`) && (Path(`/api/polls`) || Path(`/api/polls/`))"
       - "traefik.http.routers.benerbijbackend-admin.entrypoints=websecure"
       - "traefik.http.routers.benerbijbackend-admin.middlewares=myauth1"
       - "traefik.http.routers.benerbijbackend-admin.tls=true"
@@ -29,7 +29,7 @@ services:
       - "traefik.http.middlewares.myauth1.basicauth.users=${HTTP_PASSWD}"
 
 
-      - "traefik.http.routers.benerbijbackend.rule=Host(`ben-erbij.guidodiepen.nl`) && ( PathPrefix(`/api`) || PathPrefix(`/static`) || PathPrefix(`/docs`) || PathPrefix(`/openapi.json`))"
+      - "traefik.http.routers.benerbijbackend.rule=Host(`${TRAEFIK_DOMAIN}`) && ( PathPrefix(`/api`) || PathPrefix(`/static`) || PathPrefix(`/docs`) || PathPrefix(`/openapi.json`))"
       - "traefik.http.routers.benerbijbackend.entrypoints=websecure"
       - "traefik.http.routers.benerbijbackend.tls=true"
       - "traefik.http.routers.benerbijbackend.tls.certresolver=myresolver"
@@ -67,7 +67,7 @@ services:
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
 
 
-      - "traefik.http.routers.benerbijfrontend-admin.rule=Host(`ben-erbij.guidodiepen.nl`) && (Path(`/`) || PathPrefix(`/create-poll`))"
+      - "traefik.http.routers.benerbijfrontend-admin.rule=Host(`${TRAEFIK_DOMAIN}`) && (Path(`/`) || PathPrefix(`/create-poll`))"
       - "traefik.http.routers.benerbijfrontend-admin.entrypoints=websecure"
       - "traefik.http.routers.benerbijfrontend-admin.tls=true"
       - "traefik.http.routers.benerbijfrontend-admin.tls.certresolver=myresolver"
@@ -75,7 +75,7 @@ services:
       - "traefik.http.routers.benerbijfrontend-admin.middlewares=myauth2"
       - "traefik.http.middlewares.myauth2.basicauth.users=${HTTP_PASSWD}"
 
-      - "traefik.http.routers.benerbijfrontend.rule=Host(`ben-erbij.guidodiepen.nl`)"
+      - "traefik.http.routers.benerbijfrontend.rule=Host(`${TRAEFIK_DOMAIN}`)"
       - "traefik.http.routers.benerbijfrontend.entrypoints=websecure"
       - "traefik.http.routers.benerbijfrontend.tls=true"
       - "traefik.http.routers.benerbijfrontend.tls.certresolver=myresolver"
