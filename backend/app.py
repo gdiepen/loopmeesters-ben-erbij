@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import relationship, Session, mapped_column
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+import datetime
 import uuid
 import time
 import logging
@@ -141,7 +142,9 @@ def list_polls(db: Session = Depends(get_db)):
 
     try:
 
-        polls = db.query(Poll).order_by(Poll.created_at.desc()).limit(10)
+        yesterday = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+
+        polls = db.query(Poll).filter(Poll.date >= yesterday).order_by(Poll.date.desc(), Poll.created_at.desc())
 
         result = { "success": True, "result": [PollBaseSchema.from_orm(poll) for poll in polls]}
 
