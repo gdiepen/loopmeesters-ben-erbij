@@ -20,7 +20,7 @@ services:
 
       - "traefik.http.services.benerbij${ENVIRONMENT}-backend.loadbalancer.server.port=8000"
 
-      - "traefik.http.routers.benerbij${ENVIRONMENT}backend-admin.rule=Host(`${TRAEFIK_DOMAIN}`) && (Path(`/api/polls`) || Path(`/api/polls/`))"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}backend-admin.rule=Host(`${TRAEFIK_DOMAIN}`) && (Path(`/api/polls`) || Path(`/api/polls/`) || PathPrefix(`/docs`) || PathPrefix(`/openapi.json`))"
       - "traefik.http.routers.benerbij${ENVIRONMENT}backend-admin.entrypoints=websecure"
       - "traefik.http.routers.benerbij${ENVIRONMENT}backend-admin.middlewares=myauth${ENVIRONMENT}"
       - "traefik.http.routers.benerbij${ENVIRONMENT}backend-admin.tls=true"
@@ -29,7 +29,7 @@ services:
       - "traefik.http.middlewares.myauth${ENVIRONMENT}.basicauth.users=${HTTP_PASSWD}"
 
 
-      - "traefik.http.routers.benerbij${ENVIRONMENT}backend.rule=Host(`${TRAEFIK_DOMAIN}`) && ( PathPrefix(`/api`) || PathPrefix(`/static`) || PathPrefix(`/docs`) || PathPrefix(`/openapi.json`))"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}backend.rule=Host(`${TRAEFIK_DOMAIN}`) && ( PathPrefix(`/api`) || PathPrefix(`/static`))"
       - "traefik.http.routers.benerbij${ENVIRONMENT}backend.entrypoints=websecure"
       - "traefik.http.routers.benerbij${ENVIRONMENT}backend.tls=true"
       - "traefik.http.routers.benerbij${ENVIRONMENT}backend.tls.certresolver=myresolver"
