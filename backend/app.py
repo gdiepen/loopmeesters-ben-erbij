@@ -75,7 +75,7 @@ def get_trainers():
 
 
 @app.get("/api/locations", response_model=list[str])
-def get_trainers():
+def get_locations():
     """Get a list of all locations
     """
     result = []
