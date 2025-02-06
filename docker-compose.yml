@@ -18,28 +18,22 @@ services:
       - "traefik.docker.network=traefik_service"
 
 
-      - "traefik.http.services.benerbij-backend.loadbalancer.server.port=8000"
+      - "traefik.http.services.benerbij${ENVIRONMENT}-backend.loadbalancer.server.port=8000"
 
-      - "traefik.http.routers.benerbijbackend-admin.rule=Host(`${TRAEFIK_DOMAIN}`) && (Path(`/api/polls`) || Path(`/api/polls/`))"
-      - "traefik.http.routers.benerbijbackend-admin.entrypoints=websecure"
-      - "traefik.http.routers.benerbijbackend-admin.middlewares=myauth1"
-      - "traefik.http.routers.benerbijbackend-admin.tls=true"
-      - "traefik.http.routers.benerbijbackend-admin.tls.certresolver=myresolver"
-      - "traefik.http.routers.benerbijbackend-admin.service=benerbij-backend"
-      - "traefik.http.middlewares.myauth1.basicauth.users=${HTTP_PASSWD}"
-
-
-      - "traefik.http.routers.benerbijbackend.rule=Host(`${TRAEFIK_DOMAIN}`) && ( PathPrefix(`/api`) || PathPrefix(`/static`) || PathPrefix(`/docs`) || PathPrefix(`/openapi.json`))"
-      - "traefik.http.routers.benerbijbackend.entrypoints=websecure"
-      - "traefik.http.routers.benerbijbackend.tls=true"
-      - "traefik.http.routers.benerbijbackend.tls.certresolver=myresolver"
-      - "traefik.http.routers.benerbijbackend.service=benerbij-backend"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}backend-admin.rule=Host(`${TRAEFIK_DOMAIN}`) && (Path(`/api/polls`) || Path(`/api/polls/`))"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}backend-admin.entrypoints=websecure"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}backend-admin.middlewares=myauth${ENVIRONMENT}"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}backend-admin.tls=true"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}backend-admin.tls.certresolver=myresolver"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}backend-admin.service=benerbij${ENVIRONMENT}-backend"
+      - "traefik.http.middlewares.myauth${ENVIRONMENT}.basicauth.users=${HTTP_PASSWD}"
 
 
-
-
-
-
+      - "traefik.http.routers.benerbij${ENVIRONMENT}backend.rule=Host(`${TRAEFIK_DOMAIN}`) && ( PathPrefix(`/api`) || PathPrefix(`/static`) || PathPrefix(`/docs`) || PathPrefix(`/openapi.json`))"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}backend.entrypoints=websecure"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}backend.tls=true"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}backend.tls.certresolver=myresolver"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}backend.service=benerbij${ENVIRONMENT}-backend"
 
 
 
@@ -62,24 +56,24 @@ services:
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.benerbij-frontend.loadbalancer.server.port=3000"
+      - "traefik.http.services.benerbij${ENVIRONMENT}-frontend.loadbalancer.server.port=3000"
       - "traefik.docker.network=traefik_service"
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
 
 
-      - "traefik.http.routers.benerbijfrontend-admin.rule=Host(`${TRAEFIK_DOMAIN}`) && (Path(`/`) || PathPrefix(`/create-poll`))"
-      - "traefik.http.routers.benerbijfrontend-admin.entrypoints=websecure"
-      - "traefik.http.routers.benerbijfrontend-admin.tls=true"
-      - "traefik.http.routers.benerbijfrontend-admin.tls.certresolver=myresolver"
-      - "traefik.http.routers.benerbijfrontend-admin.service=benerbij-frontend"
-      - "traefik.http.routers.benerbijfrontend-admin.middlewares=myauth2"
-      - "traefik.http.middlewares.myauth2.basicauth.users=${HTTP_PASSWD}"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}frontend-admin.rule=Host(`${TRAEFIK_DOMAIN}`) && (Path(`/`) || PathPrefix(`/create-poll`))"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}frontend-admin.entrypoints=websecure"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}frontend-admin.tls=true"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}frontend-admin.tls.certresolver=myresolver"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}frontend-admin.service=benerbij${ENVIRONMENT}-frontend"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}frontend-admin.middlewares=myauth${ENVIRONMENT}"
+        #- "traefik.http.middlewares.myauth${ENVIRONMENT}.basicauth.users=${HTTP_PASSWD}"
 
-      - "traefik.http.routers.benerbijfrontend.rule=Host(`${TRAEFIK_DOMAIN}`)"
-      - "traefik.http.routers.benerbijfrontend.entrypoints=websecure"
-      - "traefik.http.routers.benerbijfrontend.tls=true"
-      - "traefik.http.routers.benerbijfrontend.tls.certresolver=myresolver"
-      - "traefik.http.routers.benerbijfrontend.service=benerbij-frontend"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}frontend.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}frontend.entrypoints=websecure"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}frontend.tls=true"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}frontend.tls.certresolver=myresolver"
+      - "traefik.http.routers.benerbij${ENVIRONMENT}frontend.service=benerbij${ENVIRONMENT}-frontend"
 
 
 networks:
