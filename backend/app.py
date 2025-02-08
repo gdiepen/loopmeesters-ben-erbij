@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import relationship, Session, mapped_column
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+from sqlalchemy.sql import func
 import datetime
 import uuid
 import time
@@ -205,7 +206,8 @@ def cast_vote(poll_id: uuid.UUID, vote_details:CreateVoteSchema , db: Session = 
 
 
         if vote_details.cancel_vote:
-            db.query(Vote).filter(Vote.user_uuid == vote_details.user_id).filter(Vote.poll_id == poll_id).filter(Vote.poll_option_id == vote_details.poll_option_id).update({"is_cancelled": True})
+            db.query(Vote).filter(Vote.user_uuid == vote_details.user_id).filter(Vote.poll_id == poll_id).filter(Vote.is_cancelled == False).filter(Vote.poll_option_id == vote_details.poll_option_id).update({"is_cancelled": True, "cancelled_at": func.now()})
+
             db.commit()
 
         else:
