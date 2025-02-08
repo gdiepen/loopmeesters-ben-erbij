@@ -65,4 +65,4 @@ class Vote(Base):
     is_cancelled = Column(Boolean(), default=False, nullable=False)
 
     created_at = Column(DateTime(timezone=False), server_default=func.now())
-
+    cancelled_at = Column(DateTime(timezone=False), nullable=True)
